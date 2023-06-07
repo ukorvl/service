@@ -29,7 +29,9 @@ jobs:
       run: npm ci
 
     - name: Build
-      run: npm run build
+      run: |
+        CI=false
+        npm run build
 
     - name: Pack build results
       if: ${{ inputs.store_build_results }}
