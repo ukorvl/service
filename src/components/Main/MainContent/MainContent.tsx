@@ -2,15 +2,15 @@ import { ReactElement } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useTranslation } from 'react-i18next';
-import Card from 'react-bootstrap/Card';
-import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Path } from '../../../routing';
-import { AppearOnScreen } from '../../AppearOnScreen';
-import { ScheduleCallCard } from '../ScheduleCallCard';
+import { Button } from 'react-bootstrap';
+import { browserName } from './getBrowserName';
+import { screenResolution } from './screenResolution';
+import os from './os';
+import { isTouchDevice } from './isTouch';
+import { ContentBlock } from './ContentBlock';
 import styles from './MainContent.module.scss';
+import { GPU } from './Gpu';
+import { Ip } from './Ip';
 
 /**
  * Footer.
@@ -18,98 +18,60 @@ import styles from './MainContent.module.scss';
  * @returns React component.
  */
 export const MainContent = (): ReactElement => {
-  const { t } = useTranslation('main');
-
   return (
     <Container
       fluid
       className={`text-bg-light ${styles.content}`}
     >
-      <h1 className="display-1 text-danger text-center pt-5">{t('content.heading')}</h1>
-      <Row className={`text-center justify-content-center pb-5 ${styles.features}`}>
-        {featuresConfig.map(({ icon, link }, i) => (
-          <Col
-            xs={12}
-            sm={6}
-            lg={4}
-            key={i}
-          >
-            <AppearOnScreen<HTMLDivElement>>
-              {({ ref }) => (
-                <Card
-                  className="text-bg-dark my-4"
-                  ref={ref}
-                >
-                  <Card.Body>
-                    <Card.Title>
-                      <FontAwesomeIcon
-                        size="3x"
-                        icon={icon}
-                      />
-                    </Card.Title>
-                    <Card.Text>{t(`content.${i}`)}</Card.Text>
-                    {link && (
-                      <Card.Link
-                        as={Link}
-                        to={link}
-                      >
-                        {t('content.linkText')}
-                      </Card.Link>
-                    )}
-                  </Card.Body>
-                </Card>
-              )}
-            </AppearOnScreen>
-          </Col>
-        ))}
-      </Row>
-      <Row className="text-bg-danger">
-        <Col
-          xs={12}
-          lg={7}
-          className="g-0"
-        >
-          <div className={styles.missionImage}>
-            <ScheduleCallCard />
-          </div>
+      <Row className={`text-center justify-content-center pb-5 pt-5`}>
+        <Col xs={12} md={4} className={styles.col}>
+          <h5 className={styles.title}>Данные об устройстве</h5>
+          <ContentBlock
+            title='Браузер'
+            value={browserName}
+          />
+          <ContentBlock
+            title="Операционная система"
+            value={os}
+          />
+          <ContentBlock
+            title="JavaScript"
+            value="Доступен"
+          />
+          <ContentBlock
+            title="Состояние подключения"
+            value={navigator.onLine ? 'Онлайн' : 'Оффлайн'}
+          />
+          <ContentBlock
+            title="Coockies"
+            value={navigator.cookieEnabled ? 'Доступны' : 'Заблокированы'}
+          />
+          <ContentBlock
+            title="Язык устройства"
+            value={navigator.language}
+          />
+          <ContentBlock
+            title="Движок"
+            value={navigator.product}
+          />
+          <GPU />
+          <ContentBlock
+            title='Сенсорное устройство'
+            value={isTouchDevice() ? 'Да' : 'Нет'}
+          />
         </Col>
-        <Col
-          xs={12}
-          lg={5}
-          className="g-0 d-flex align-items-center"
-        >
-          <h1 className="text-bg-danger text-center py-5">{t('mission.motto')}</h1>
+        <Col xs={12} md={4} className={styles.col}>
+          <h5 className={styles.title}>Сетевые данные</h5>
+          <Ip />
+        </Col>
+        <Col xs={12}>
+          <Button
+            className={styles.btn}
+          >
+            Выполнить полную диагностику
+          </Button>
         </Col>
       </Row>
     </Container>
   );
 };
-
-/**
- * Features config.
- */
-const featuresConfig: Array<{
-  icon: [IconPrefix, IconName];
-  link?: Path;
-}> = [
-  {
-    icon: ['fas', 'briefcase'],
-    link: Path.appointment,
-  },
-  {
-    icon: ['fas', 'shield-halved'],
-    link: Path.appointment,
-  },
-  {
-    icon: ['fas', 'percent'],
-    link: Path.appointment,
-  },
-  {
-    icon: ['fas', 'handshake'],
-    link: Path.appointment,
-  },
-  {
-    icon: ['fas', 'building-shield'],
-    link: Path.appointment,
-  },
-];

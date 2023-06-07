@@ -21,7 +21,6 @@ export const Layout = ({ children }: LayoutProps): ReactElement => {
     <div className={styles.layout}>
       <Header />
       <div className={styles.body}>{children}</div>
-      <Footer />
     </div>
   );
 };

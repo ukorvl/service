@@ -6,7 +6,7 @@ import { ReactElement } from 'react';
  * @returns React component.
  */
 const View404 = (): ReactElement => {
-  return <div>Page not found</div>;
+  return <div>Такой страницы не найдено!</div>;
 };
 
 export default View404;
