@@ -1,0 +1,11 @@
+.textBlock {
+  text-align: center;
+
+  + .textBlock {
+    margin-top: 3rem;
+  }
+
+  &:last-of-type {
+    margin-bottom: 5rem;
+  }
+}
