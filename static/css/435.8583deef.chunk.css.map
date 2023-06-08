@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/435.8583deef.chunk.css","mappings":"AAAA,kBAGE,sDAFA,aACA,kBACA,CAGF,mBACE,aACA,qBACA","sources":["views/styles/login.module.scss"],"sourcesContent":[".img {\n  height: 10rem;\n  object-fit: contain;\n  filter: grayscale(100%);\n}\n\n.card {\n  height: 30rem;\n  margin-bottom: 1.5rem;\n  overflow: hidden;\n}\n"],"names":[],"sourceRoot":""}
