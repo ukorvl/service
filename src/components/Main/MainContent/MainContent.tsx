@@ -54,6 +54,10 @@ export const MainContent = (): ReactElement => {
             title="Движок"
             value={navigator.product}
           />
+          <ContentBlock
+            title="AppName"
+            value={navigator.appName}
+          />
           <GPU />
           <ContentBlock
             title='Сенсорное устройство'

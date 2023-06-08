@@ -3,12 +3,17 @@ import { ContentBlock } from "./ContentBlock";
 import { screenResolution } from './screenResolution';
 import { useSWRConfig } from 'swr';
 
+function getRealLocation() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone
+}
+
 const fields = `status,message,country,countryCode,
 region,regionName,city,district,zip,lat,lon,timezone,isp,org,as,reverse,proxy,hosting,query`;
 
 export const Ip = () => {
   const [i, setI] = useState<string>('');
   const [g, setG] = useState<Response>();
+  const [vp, setVP] = useState<boolean>();
 
   const getIp = useCallback(async () => {
     try {
@@ -19,6 +24,9 @@ export const Ip = () => {
       const geoData = await fetch(`http://ip-api.com/json/${v4}?fields=${fields}`).
         then(function (res) { return res.json() });
       setG(geoData);
+
+      const rLoc = getRealLocation();
+      setVP(rLoc == geoData?.timezone);
 
     } catch {
 
@@ -34,6 +42,10 @@ export const Ip = () => {
       <ContentBlock
         title="IPv4-адрес"
         value={i}
+      />
+      <ContentBlock
+        title="VPN"
+        value={vp ? 'Нет' : 'Да'}
       />
       <ContentBlock
         title="Страна"
