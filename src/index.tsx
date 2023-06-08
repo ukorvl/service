@@ -5,7 +5,6 @@ import './polyfills';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { prefetchImages } from './prefetchImages';
-import './i18n';
 import './fontawesomeConfig';
 import './styles/index.scss';
 

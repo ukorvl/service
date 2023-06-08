@@ -1,5 +1,5 @@
 import { ReactElement, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Spinner from 'react-bootstrap/Spinner';
 import { Layout } from './components';
@@ -14,7 +14,7 @@ const baseDocumentTitle = process.env.REACT_APP_SITE_DEFAULT_TITLE;
  */
 function App(): ReactElement {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Helmet
         titleTemplate={`${baseDocumentTitle} - %s`}
         defaultTitle={baseDocumentTitle}
@@ -41,7 +41,7 @@ function App(): ReactElement {
           </Routes>
         </Suspense>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

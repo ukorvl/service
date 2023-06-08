@@ -64,13 +64,6 @@ export const MainContent = (): ReactElement => {
           <h5 className={styles.title}>Сетевые данные</h5>
           <Ip />
         </Col>
-        <Col xs={12}>
-          <Button
-            className={styles.btn}
-          >
-            Выполнить полную диагностику
-          </Button>
-        </Col>
       </Row>
     </Container>
   );
