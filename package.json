@@ -1,5 +1,6 @@
 {
   "name": "great.do",
+  "homepage": "https://ukorvl.github.io/service",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -41,7 +42,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --ext=ts,tsx src",
-    "prettier": "prettier --write"
+    "prettier": "prettier --write",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -62,6 +65,7 @@
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-jsdoc": "^39.6.4",
     "eslint-plugin-jsx-a11y": "^6.6.1",
+    "gh-pages": "^5.0.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.0.4",
     "prettier": "^2.8.0"
