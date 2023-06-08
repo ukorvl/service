@@ -15,6 +15,4 @@
 @import "~bootstrap/scss/list-group";
 @import "~bootstrap/scss/tables";
 
-@import "~bootstrap/scss/forms/floating-labels.scss";
-@import "~bootstrap/scss/forms/form-control.scss";
-@import "~bootstrap/scss/forms/input-group.scss";
+@import '../../node_modules/bootstrap/scss/forms';

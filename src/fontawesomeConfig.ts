@@ -11,6 +11,8 @@ import {
   faUser,
   faAngleDown,
   faAngleUp,
+  faEye,
+  faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 
 config.autoAddCss = false;
@@ -30,4 +32,6 @@ library.add(
   faUser,
   faAngleDown,
   faAngleUp,
+  faEye,
+  faEyeSlash
 );
