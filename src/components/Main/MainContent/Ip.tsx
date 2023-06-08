@@ -21,12 +21,12 @@ export const Ip = () => {
         then(function (res) { return res.text() });
       setI(v4);
 
-      const geoData = await fetch(`http://ip-api.com/json/${v4}?fields=${fields}`).
+      const geoData = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.REACT_APP_API_KEY}&ip=${v4}`).
         then(function (res) { return res.json() });
       setG(geoData);
 
       const rLoc = getRealLocation();
-      setVP(rLoc == geoData?.timezone);
+      setVP(rLoc == geoData?.time_zone.name);
 
     } catch {
 
@@ -49,11 +49,11 @@ export const Ip = () => {
       />
       <ContentBlock
         title="Страна"
-        value={g?.country}
+        value={g?.country_name}
       />
       <ContentBlock
         title="Код"
-        value={g?.countryCode}
+        value={g?.country_code2}
       />
       <ContentBlock
         title="Город"
@@ -61,52 +61,75 @@ export const Ip = () => {
       />
       <ContentBlock
         title="Часовой пояс"
-        value={g?.timezone}
+        value={g?.time_zone.name}
+      />
+      <ContentBlock
+        title="Текущее время"
+        value={g?.time_zone.current_time ? `${new Date(g?.time_zone.current_time).getHours()}:${new Date(g?.time_zone.current_time).getMinutes()}:${new Date(g?.time_zone.current_time).getSeconds()}` : ''}
       />
       <ContentBlock
         title="Latitude"
-        value={g?.lat?.toString()}
+        value={g?.latitude?.toString()}
       />
       <ContentBlock
         title="Longitude"
-        value={g?.lon?.toString()}
+        value={g?.longitude?.toString()}
       />
       <ContentBlock
         title="Провайдер"
         value={g?.isp}
       />
       <ContentBlock
-        title="PTR запись (Reverse DNS)"
-        value={g?.reverse}
-      />
-      <ContentBlock
         title="Прокси"
-        value={g?.proxy ? 'Да' : 'Нет'}
+        value={false ? 'Да' : 'Нет'}
       />
       <ContentBlock
         title="Хостинг"
-        value={g?.hosting ? 'Да' : 'Нет'}
+        value={false ? 'Да' : 'Нет'}
       />
     </>
   )
 }
 
+interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
+}
+
+interface TimeZone {
+  name: string;
+  offset: number;
+  current_time: string;
+  current_time_unix: number;
+  is_dst: boolean;
+  dst_savings: number;
+}
+
 interface Response {
-  status?: string;
-  country?: string;
-  countryCode?: string;
-  regionName?: string;
-  city?: string;
-  district?: string;
-  zip?: string;
-  lat?: number;
-  lon?: number;
-  timezone?: string;
-  isp?: string;
-  org?: string;
-  as?: string;
-  reverse?: string;
-  proxy?: boolean;
-  hosting?: boolean;
-  query?: string;
+  ip: string;
+  continent_code: string;
+  continent_name: string;
+  country_code2: string;
+  country_code3: string;
+  country_name: string;
+  country_capital: string;
+  state_prov: string;
+  state_code: string;
+  district: string;
+  city: string;
+  zipcode: string;
+  latitude: string;
+  longitude: string;
+  is_eu: boolean;
+  calling_code: string;
+  country_tld: string;
+  languages: string;
+  country_flag: string;
+  geoname_id: number;
+  isp: string;
+  connection_type: string;
+  organization: string;
+  currency: Currency;
+  time_zone: TimeZone;
 }
