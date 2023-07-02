@@ -1,16 +1,18 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
+import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Button } from 'react-bootstrap';
+import langmap from "langmap";
 import { browserName } from './getBrowserName';
 import { screenResolution } from './screenResolution';
 import os from './os';
 import { isTouchDevice } from './isTouch';
 import { ContentBlock } from './ContentBlock';
-import styles from './MainContent.module.scss';
 import { GPU } from './Gpu';
 import { Ip } from './Ip';
+import styles from './MainContent.module.scss';
 
 /**
  * Footer.
@@ -18,6 +20,24 @@ import { Ip } from './Ip';
  * @returns React component.
  */
 export const MainContent = (): ReactElement => {
+  const [fpResult, setFpResult] = useState<GetResult>();
+  useEffect(() => {
+    // eslint-disable-next-line import/no-named-as-default-member
+    const fpPromise = FingerprintJS.load()
+
+      ; (async () => {
+        // Get the visitor identifier when you need it.
+        try {
+          const fp = await fpPromise
+          const result = await fp.get()
+          console.log(result)
+          setFpResult(result);
+        } catch {
+
+        }
+      })()
+  }, []);
+
   return (
     <Container
       fluid
@@ -63,6 +83,36 @@ export const MainContent = (): ReactElement => {
             title='Сенсорное устройство'
             value={isTouchDevice() ? 'Да' : 'Нет'}
           />
+          {fpResult && (
+            <>
+              <ContentBlock
+                title="Язык устройства"
+                value={<ul style={{ paddingLeft: '1rem', marginBottom: 0 }}>{fpResult.components?.languages.value?.map((x, i) =>
+                  (<li key={i}>{x.map(x => langmap[x].nativeName).join(', ')}</li>))}</ul>
+                }
+              />
+              <ContentBlock
+                title='Режим Reduced motion'
+                value={fpResult.components?.reducedMotion.value ? 'Да' : 'Нет'}
+              />
+              <ContentBlock
+                title='Local storage'
+                value={fpResult.components?.localStorage.value ? 'Доступен' : 'Недоступен'}
+              />
+              <ContentBlock
+                title='Session storage'
+                value={fpResult.components?.sessionStorage.value ? 'Доступен' : 'Недоступен'}
+              />
+              <ContentBlock
+                title='IndexedDB storage'
+                value={fpResult.components?.indexedDB.value ? 'Доступен' : 'Недоступен'}
+              />
+              <ContentBlock
+                title='Плагины браузера'
+                value={<ul style={{ paddingLeft: '1rem' }}>{fpResult.components?.plugins.value?.map(x => (<li key={x.name}>{x.name}</li>))}</ul>}
+              />
+            </>
+          )}
         </Col>
         <Col xs={12} md={4} className={styles.col}>
           <h5 className={styles.title}>Сетевые данные</h5>

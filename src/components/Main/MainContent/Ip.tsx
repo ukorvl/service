@@ -65,7 +65,7 @@ export const Ip = () => {
       />
       <ContentBlock
         title="Текущее время"
-        value={g?.time_zone.current_time ? `${new Date(g?.time_zone.current_time).getHours()}:${new Date(g?.time_zone.current_time).getMinutes()}:${new Date(g?.time_zone.current_time).getSeconds()}` : ''}
+        value={g?.time_zone.current_time ? getHumanReadableDate(g?.time_zone.current_time) : ''}
       />
       <ContentBlock
         title="Latitude"
@@ -132,4 +132,18 @@ interface Response {
   organization: string;
   currency: Currency;
   time_zone: TimeZone;
+}
+
+function getHumanReadableDate(date: string) {
+  let result = '';
+  const d = new Date(date);
+  const hours = d.getHours().toString();
+  const mins = d.getMinutes().toString();
+  const secs = d.getSeconds().toString();
+
+  result += (hours.length === 1 ? `0${hours}` : hours) + ':'
+  result += (mins.length === 1 ? `0${mins}` : mins) + ':'
+  result += (secs.length === 1 ? `0${secs}` : secs)
+
+  return result;
 }
