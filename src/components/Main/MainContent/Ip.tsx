@@ -2,6 +2,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { ContentBlock } from "./ContentBlock";
 import { screenResolution } from './screenResolution';
 import { useSWRConfig } from 'swr';
+import { isTor } from './isTor';
 
 function getRealLocation() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -86,6 +87,10 @@ export const Ip = () => {
       <ContentBlock
         title="Хостинг"
         value={false ? 'Да' : 'Нет'}
+      />
+      <ContentBlock
+        title="TOR-браузер"
+        value={isTor() ? 'Да' : 'Нет'}
       />
     </>
   )
