@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Button } from 'react-bootstrap';
 import langmap from "langmap";
+import { detectIncognito } from "detectincognitojs";
 import { browserName } from './getBrowserName';
 import { screenResolution } from './screenResolution';
 import os from './os';
@@ -21,6 +22,8 @@ import styles from './MainContent.module.scss';
  */
 export const MainContent = (): ReactElement => {
   const [fpResult, setFpResult] = useState<GetResult>();
+  const [incognito, setIncognito] = useState<boolean>();
+
   useEffect(() => {
     // eslint-disable-next-line import/no-named-as-default-member
     const fpPromise = FingerprintJS.load()
@@ -36,6 +39,12 @@ export const MainContent = (): ReactElement => {
 
         }
       })()
+  }, []);
+
+  useEffect(() => {
+    detectIncognito().then((result) => {
+      setIncognito(result.isPrivate);
+    });
   }, []);
 
   return (
@@ -109,7 +118,13 @@ export const MainContent = (): ReactElement => {
               />
               <ContentBlock
                 title='Плагины браузера'
-                value={<ul style={{ paddingLeft: '1rem' }}>{fpResult.components?.plugins.value?.map(x => (<li key={x.name}>{x.name}</li>))}</ul>}
+                value={fpResult.components?.plugins.value?.length ?
+                  <ul style={{ paddingLeft: '1rem' }}>{fpResult.components?.plugins.value?.map(x => (<li key={x.name}>{x.name}</li>))}</ul>
+                  : 'Не найдено'}
+              />
+              <ContentBlock
+                title='Глубина цвета экрана'
+                value={fpResult.components.colorDepth.value}
               />
             </>
           )}
@@ -117,6 +132,12 @@ export const MainContent = (): ReactElement => {
         <Col xs={12} md={4} className={styles.col}>
           <h5 className={styles.title}>Сетевые данные</h5>
           <Ip />
+          {incognito !== undefined && (
+            <ContentBlock
+              title='Режим инкогнито'
+              value={incognito ? 'Да' : 'Нет'}
+            />
+          )}
         </Col>
       </Row>
     </Container>
