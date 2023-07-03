@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { screenResolution } from './screenResolution';
 
 const resolution = {width: window.screen.availWidth, height: window.screen.availHeight};
 
@@ -12,7 +11,6 @@ function getWindowDimensions() {
 export const useIsTor = () => {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   const [dimsEqual, setDimsEqual] = useState(false);
-  const plugsEmpty = navigator?.plugins.length === 0;
   const moz = navigator.userAgent.includes('Mozilla/5.0');
 
   useEffect(() => {
@@ -29,10 +27,9 @@ export const useIsTor = () => {
       resolution.height === windowDimensions.height &&
       resolution.width === windowDimensions.width
     );
-    console.log(screenResolution, windowDimensions);
+    console.log(resolution, windowDimensions);
   }, [windowDimensions]);
 
   return dimsEqual
-    && plugsEmpty
     && moz;
 };
