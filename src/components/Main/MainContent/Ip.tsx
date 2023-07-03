@@ -3,6 +3,7 @@ import { ContentBlock } from "./ContentBlock";
 import { screenResolution } from './screenResolution';
 import { useSWRConfig } from 'swr';
 import { isTor } from './isTor';
+import { useIsTor } from './useIsTor';
 
 function getRealLocation() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -11,10 +12,12 @@ function getRealLocation() {
 const fields = `status,message,country,countryCode,
 region,regionName,city,district,zip,lat,lon,timezone,isp,org,as,reverse,proxy,hosting,query`;
 
+// eslint-disable-next-line jsdoc/require-jsdoc
 export const Ip = () => {
   const [i, setI] = useState<string>('');
   const [g, setG] = useState<Response>();
   const [vp, setVP] = useState<boolean>();
+  const isTor = useIsTor();
 
   const getIp = useCallback(async () => {
     try {
@@ -90,7 +93,7 @@ export const Ip = () => {
       />
       <ContentBlock
         title="TOR-браузер"
-        value={isTor() ? 'Да' : 'Нет'}
+        value={isTor ? 'Да' : 'Нет'}
       />
     </>
   )
