@@ -1,8 +1,6 @@
 function getBrowserName(userAgent: Navigator['userAgent']) {
   // The order matters here, and this may report false positives for unlisted browsers.
 
-  console.log(userAgent);
-
   if (userAgent.includes("Firefox")) {
     // "Mozilla/5.0 (X11; Linux i686; rv:104.0) Gecko/20100101 Firefox/104.0"
     return "Mozilla Firefox";

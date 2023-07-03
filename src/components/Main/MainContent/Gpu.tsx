@@ -19,7 +19,7 @@ export const GPU = () => {
     <>
       <ContentBlock
         title="Разрешение экрана"
-        value={`${screenResolution} / ${g?.fps} fps`}
+        value={`${screenResolution}${g?.fps ? ` / ${g?.fps} fps` : ''}`}
       />
       <ContentBlock
         title="Gpu"

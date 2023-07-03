@@ -140,6 +140,10 @@ interface Response {
 }
 
 function getHumanReadableDate(date: string) {
+  if (!date) {
+    return 'Не определено';
+  }
+
   let result = '';
   const d = new Date(date);
   const hours = d.getHours().toString();

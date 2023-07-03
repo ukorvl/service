@@ -3,16 +3,15 @@ import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Button } from 'react-bootstrap';
 import langmap from "langmap";
 import { detectIncognito } from "detectincognitojs";
 import { browserName } from './getBrowserName';
-import { screenResolution } from './screenResolution';
 import os from './os';
 import { isTouchDevice } from './isTouch';
 import { ContentBlock } from './ContentBlock';
 import { GPU } from './Gpu';
 import { Ip } from './Ip';
+import battery from "./battery";
 import styles from './MainContent.module.scss';
 
 /**
@@ -23,6 +22,7 @@ import styles from './MainContent.module.scss';
 export const MainContent = (): ReactElement => {
   const [fpResult, setFpResult] = useState<GetResult>();
   const [incognito, setIncognito] = useState<boolean>();
+  const [batteryInfo, setBatteryInfo] = useState<{ level: string, charging: boolean }>();
 
   useEffect(() => {
     // eslint-disable-next-line import/no-named-as-default-member
@@ -33,7 +33,6 @@ export const MainContent = (): ReactElement => {
         try {
           const fp = await fpPromise
           const result = await fp.get()
-          console.log(result)
           setFpResult(result);
         } catch {
 
@@ -45,6 +44,12 @@ export const MainContent = (): ReactElement => {
     detectIncognito().then((result) => {
       setIncognito(result.isPrivate);
     });
+
+    const getBattery = async () => {
+      const info = await battery();
+      setBatteryInfo(info);
+    };
+    getBattery();
   }, []);
 
   return (
@@ -74,10 +79,6 @@ export const MainContent = (): ReactElement => {
           <ContentBlock
             title="Coockies"
             value={navigator.cookieEnabled ? 'Доступны' : 'Заблокированы'}
-          />
-          <ContentBlock
-            title="Язык устройства"
-            value={navigator.language}
           />
           <ContentBlock
             title="Движок"
@@ -125,6 +126,18 @@ export const MainContent = (): ReactElement => {
               <ContentBlock
                 title='Глубина цвета экрана'
                 value={fpResult.components.colorDepth.value}
+              />
+            </>
+          )}
+          {batteryInfo && (
+            <>
+              <ContentBlock
+                title='Уровень заряда'
+                value={batteryInfo.level}
+              />
+              <ContentBlock
+                title='Заряжается'
+                value={batteryInfo.charging ? 'Да' : 'Нет'}
               />
             </>
           )}
