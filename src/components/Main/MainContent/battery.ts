@@ -12,9 +12,11 @@ export default async () => {
 	try {
 		const {level, charging} = await getBattery();
 
+    console.log(level, charging);
+
 		return {
 			level: `${level * 100}%`,
-			charging
+			charging: charging ? 'Да' : 'Нет'
 		}
 	} catch (_) {
 		return {

@@ -22,7 +22,7 @@ import styles from './MainContent.module.scss';
 export const MainContent = (): ReactElement => {
   const [fpResult, setFpResult] = useState<GetResult>();
   const [incognito, setIncognito] = useState<boolean>();
-  const [batteryInfo, setBatteryInfo] = useState<{ level: string, charging: boolean }>();
+  const [batteryInfo, setBatteryInfo] = useState<{ level: string, charging: string }>();
 
   useEffect(() => {
     // eslint-disable-next-line import/no-named-as-default-member
@@ -137,7 +137,7 @@ export const MainContent = (): ReactElement => {
               />
               <ContentBlock
                 title='Заряжается'
-                value={batteryInfo.charging ? 'Да' : 'Нет'}
+                value={batteryInfo.charging}
               />
             </>
           )}
